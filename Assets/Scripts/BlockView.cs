@@ -27,6 +27,7 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         gridManager = grid;
         //trayManager = GetComponentInParent<BlockTrayManager>();
         gridRenderer = FindObjectOfType<GridRenderer>();
+        //gridRenderer = Object.FindFirstObjectByType<GridRenderer>();
 
         canvas = GetComponentInParent<Canvas>();
 
@@ -85,6 +86,8 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             PlacementValidator.Place(blockData, gridPos, gridManager);
 
+            gridRenderer.PlaceVisual(blockData, gridPos);       // step 6.5
+
             CheckForLineClear();
 
             SnapToGrid(gridPos);
@@ -101,6 +104,23 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
     }
 
+    //void CheckForLineClear()
+    //{
+    //    var completedRows = gridManager.GetCompletedRows();
+    //    var completedColumns = gridManager.GetCompletedColumns();
+
+    //    foreach (int row in completedRows)
+    //    {
+    //        gridManager.ClearRow(row);
+    //        gridRenderer.ClearRow(row);
+    //    }
+
+    //    foreach (int col in completedColumns)
+    //    {
+    //        gridManager.ClearColumn(col);
+    //        gridRenderer.ClearColumn(col);
+    //    }
+    //}
     void CheckForLineClear()
     {
         var completedRows = gridManager.GetCompletedRows();
