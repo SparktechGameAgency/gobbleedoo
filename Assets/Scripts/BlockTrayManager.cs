@@ -3,22 +3,20 @@ using UnityEngine;
 
 public class BlockTrayManager : MonoBehaviour
 {
-    public static BlockTrayManager Instance;
-
-    public Transform trayParent;
     public BlockView blockPrefab;
     public List<BlockData> availableBlocks;
+    public GridManager gridManager;
 
-    private int remainingBlocks;
+    private List<BlockView> activeBlocks = new List<BlockView>();
 
-    void Awake()
+    void Start()
     {
-        Instance = this;
+        SpawnNewSet();
     }
 
     public void SpawnNewSet()
     {
-        remainingBlocks = 3;
+        ClearTray();
 
         for (int i = 0; i < 3; i++)
         {
@@ -26,17 +24,29 @@ public class BlockTrayManager : MonoBehaviour
                 availableBlocks[Random.Range(0, availableBlocks.Count)];
 
             BlockView block =
-                Instantiate(blockPrefab, trayParent);
+                Instantiate(blockPrefab, transform);
 
-            //block.Initialize(randomBlock, FindObjectOfType<GridManager>());
+            block.Initialize(randomBlock, gridManager);
+
+            activeBlocks.Add(block);
         }
     }
 
-    public void NotifyBlockUsed()
+    public void NotifyBlockUsed(BlockView block)
     {
-        remainingBlocks--;
+        activeBlocks.Remove(block);
 
-        if (remainingBlocks <= 0)
+        if (activeBlocks.Count == 0)
+        {
             SpawnNewSet();
+        }
+    }
+
+    void ClearTray()
+    {
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+
+        activeBlocks.Clear();
     }
 }

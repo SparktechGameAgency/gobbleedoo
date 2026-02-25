@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -43,5 +44,69 @@ public class GridManager : MonoBehaviour
         int y = Mathf.FloorToInt(-localPoint.y / cellSize);
 
         return new Vector2Int(x, y);
+    }
+
+    public List<int> GetCompletedRows()
+    {
+        List<int> completed = new List<int>();
+
+        for (int y = 0; y < height; y++)
+        {
+            bool full = true;
+
+            for (int x = 0; x < width; x++)
+            {
+                if (!grid[x, y])
+                {
+                    full = false;
+                    break;
+                }
+            }
+
+            if (full)
+                completed.Add(y);
+        }
+
+        return completed;
+    }
+
+    public List<int> GetCompletedColumns()
+    {
+        List<int> completed = new List<int>();
+
+        for (int x = 0; x < width; x++)
+        {
+            bool full = true;
+
+            for (int y = 0; y < height; y++)
+            {
+                if (!grid[x, y])
+                {
+                    full = false;
+                    break;
+                }
+            }
+
+            if (full)
+                completed.Add(x);
+        }
+
+        return completed;
+    }
+
+    public void ClearRow(int row)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            grid[x, row] = false;
+        }
+    }
+
+    public void ClearColumn(int column)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            grid[column, y] = false;
+        }
     }
 }
