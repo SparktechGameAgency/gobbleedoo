@@ -11,9 +11,16 @@ public class GridManager : MonoBehaviour
 
     private bool[,] grid;
 
+    [SerializeField] private Canvas canvas;
+
     void Awake()
     {
         grid = new bool[width, height];
+    }
+
+    void Start()
+    {
+        CalculateCellSize();
     }
 
     public bool IsInsideGrid(int x, int y)
@@ -36,7 +43,7 @@ public class GridManager : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             gridArea,
             worldPosition,
-            null,
+            canvas.worldCamera,
             out Vector2 localPoint
         );
 
@@ -108,5 +115,11 @@ public class GridManager : MonoBehaviour
         {
             grid[column, y] = false;
         }
+    }
+
+    public void CalculateCellSize()
+    {
+        float boardWidth = gridArea.rect.width;
+        cellSize = boardWidth / width;
     }
 }

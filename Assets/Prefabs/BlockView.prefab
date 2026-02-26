@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4482910934728604786}
   - component: {fileID: 1979340252105756477}
   - component: {fileID: 7287692814327292730}
+  - component: {fileID: -1771994323959413722}
   m_Layer: 5
   m_Name: BlockView
   m_TagString: Untagged
@@ -64,3 +65,24 @@ MonoBehaviour:
   blockData: {fileID: 11400000, guid: 4fea3541b3f021e4f9dd6b7f9bda7763, type: 2}
   cellPrefab: {fileID: 1965381164776232443, guid: 201d3738a3da5554cad5c2f996ac0daa, type: 3}
   cellSize: 100
+  gridManager: {fileID: 0}
+--- !u!114 &-1771994323959413722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7359922815044603167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: 300
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1

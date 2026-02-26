@@ -7,8 +7,15 @@ public class GridRenderer : MonoBehaviour
     public GameObject cellVisualPrefab;
     public RectTransform gridParent;
 
+    public GameObject gridCellBackgroundPrefab;
+
     private Dictionary<Vector2Int, GameObject> activeCells
         = new Dictionary<Vector2Int, GameObject>();
+
+    void Start()
+    {
+        GenerateGridVisual();
+    }
 
     public void PlaceVisual(BlockData blockData, Vector2Int origin)
     {
@@ -31,6 +38,31 @@ public class GridRenderer : MonoBehaviour
             );
 
             activeCells[pos] = cellObj;
+        }
+    }
+
+    public void GenerateGridVisual()
+    {
+        for (int x = 0; x < gridManager.width; x++)
+        {
+            for (int y = 0; y < gridManager.height; y++)
+            {
+                GameObject cell =
+                    Instantiate(gridCellBackgroundPrefab, gridParent);
+
+                RectTransform rect =
+                    cell.GetComponent<RectTransform>();
+
+                rect.sizeDelta = new Vector2(
+                    gridManager.cellSize,
+                    gridManager.cellSize
+                );
+
+                rect.anchoredPosition = new Vector2(
+                    x * gridManager.cellSize,
+                    -y * gridManager.cellSize
+                );
+            }
         }
     }
 

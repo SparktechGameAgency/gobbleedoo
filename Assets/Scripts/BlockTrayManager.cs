@@ -49,4 +49,9 @@ public class BlockTrayManager : MonoBehaviour
 
         activeBlocks.Clear();
     }
+
+    public List<BlockView> GetActiveBlocks()
+    {
+        return activeBlocks;
+    }
 }

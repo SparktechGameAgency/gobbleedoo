@@ -13,21 +13,15 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private BlockTrayManager trayManager;
     private GridRenderer gridRenderer;
 
-    //void Start()
-    //{
-    //    if (blockData != null && gridManager != null)
-    //    {
-    //        Initialize(blockData, gridManager);
-    //    }
-    //}
+    private Vector2 dragOffset;     // before step 7 
 
     public void Initialize(BlockData data, GridManager grid)
     {
         blockData = data;
         gridManager = grid;
-        //trayManager = GetComponentInParent<BlockTrayManager>();
-        gridRenderer = FindObjectOfType<GridRenderer>();
-        //gridRenderer = Object.FindFirstObjectByType<GridRenderer>();
+        trayManager = GetComponentInParent<BlockTrayManager>();
+        //gridRenderer = FindObjectOfType<GridRenderer>();
+        gridRenderer = Object.FindFirstObjectByType<GridRenderer>();
 
         canvas = GetComponentInParent<Canvas>();
 
@@ -53,14 +47,19 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //startPosition = transform.position;
-        startPosition = GetComponent<RectTransform>().anchoredPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            eventData.position,
+            canvas.worldCamera,
+            out Vector2 localPoint
+        );
+
+        RectTransform rect = GetComponent<RectTransform>();
+        dragOffset = rect.anchoredPosition - localPoint;
+
+        startPosition = rect.anchoredPosition;
     }
 
-    //public void OnDrag(PointerEventData eventData)
-    //{
-    //    transform.position += (Vector3)eventData.delta;
-    //}
     public void OnDrag(PointerEventData eventData)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -70,7 +69,8 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             out Vector2 localPoint
         );
 
-        GetComponent<RectTransform>().anchoredPosition = localPoint;
+        GetComponent<RectTransform>().anchoredPosition =
+            localPoint + dragOffset;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -88,9 +88,11 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             gridRenderer.PlaceVisual(blockData, gridPos);       // step 6.5
 
-            CheckForLineClear();
+            GameManager.Instance.OnBlockPlaced();
+            //CheckForLineClear();
+            //GameManager.Instance.CheckGameOver();
 
-            SnapToGrid(gridPos);
+            //SnapToGrid(gridPos);
 
             //GetComponent<CanvasGroup>().blocksRaycasts = false;
             //enabled = false;
@@ -121,23 +123,16 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //        gridRenderer.ClearColumn(col);
     //    }
     //}
-    void CheckForLineClear()
-    {
-        var completedRows = gridManager.GetCompletedRows();
-        var completedColumns = gridManager.GetCompletedColumns();
+    //void CheckForLineClear()
+    //{
+    //    var completedRows = gridManager.GetCompletedRows();
+    //    var completedColumns = gridManager.GetCompletedColumns();
 
-        foreach (int row in completedRows)
-        {
-            gridManager.ClearRow(row);
-            gridRenderer.ClearRow(row);
-        }
-
-        foreach (int col in completedColumns)
-        {
-            gridManager.ClearColumn(col);
-            gridRenderer.ClearColumn(col);
-        }
-    }
+    //    if (completedRows.Count > 0 || completedColumns.Count > 0)
+    //    {
+    //        GameManager.Instance.HandleLineClear(completedRows, completedColumns);
+    //    }
+    //}
 
     void SnapToGrid(Vector2Int gridPos)
     {
