@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
     public int width = 8;
     public int height = 8;
 
-    public float cellSize = 100f;   // Must match BlockView cellSize
+    public float cellSize = 100f;   
     public RectTransform gridArea;  // Assign in Inspector
 
     private bool[,] grid;

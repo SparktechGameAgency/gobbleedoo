@@ -5,7 +5,8 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 {
     public BlockData blockData;
     public GameObject cellPrefab;
-    public float cellSize = 100f;
+    //public float cellSize = 100f;
+    private float cellSize;
 
     private Vector2 startPosition;
     private Canvas canvas;
@@ -15,15 +16,20 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private Vector2 dragOffset;     // before step 7 
 
+    private RectTransform rectTransform;
+
     public void Initialize(BlockData data, GridManager grid)
     {
         blockData = data;
         gridManager = grid;
+
+        cellSize = gridManager.cellSize;
+
         trayManager = GetComponentInParent<BlockTrayManager>();
-        //gridRenderer = FindObjectOfType<GridRenderer>();
         gridRenderer = Object.FindFirstObjectByType<GridRenderer>();
 
         canvas = GetComponentInParent<Canvas>();
+        rectTransform = GetComponent<RectTransform>();
 
         GenerateCells();
     }
@@ -40,7 +46,7 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             rect.anchoredPosition = new Vector2(
                 cell.x * cellSize,
-                cell.y * cellSize
+                -cell.y * cellSize
             );
         }
     }
@@ -54,10 +60,8 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             out Vector2 localPoint
         );
 
-        RectTransform rect = GetComponent<RectTransform>();
-        dragOffset = rect.anchoredPosition - localPoint;
-
-        startPosition = rect.anchoredPosition;
+        dragOffset = rectTransform.anchoredPosition - localPoint;
+        startPosition = rectTransform.anchoredPosition;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -69,8 +73,7 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             out Vector2 localPoint
         );
 
-        GetComponent<RectTransform>().anchoredPosition =
-            localPoint + dragOffset;
+        rectTransform.anchoredPosition = localPoint + dragOffset;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -86,62 +89,16 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             PlacementValidator.Place(blockData, gridPos, gridManager);
 
-            gridRenderer.PlaceVisual(blockData, gridPos);       // step 6.5
+            gridRenderer.PlaceVisual(blockData, gridPos);       
 
             GameManager.Instance.OnBlockPlaced();
-            //CheckForLineClear();
-            //GameManager.Instance.CheckGameOver();
 
-            //SnapToGrid(gridPos);
-
-            //GetComponent<CanvasGroup>().blocksRaycasts = false;
-            //enabled = false;
             trayManager.NotifyBlockUsed(this);
             Destroy(gameObject);
         }
         else
         {
-            //transform.position = startPosition;
-            GetComponent<RectTransform>().anchoredPosition = startPosition;
+            rectTransform.anchoredPosition = startPosition;
         }
-    }
-
-    //void CheckForLineClear()
-    //{
-    //    var completedRows = gridManager.GetCompletedRows();
-    //    var completedColumns = gridManager.GetCompletedColumns();
-
-    //    foreach (int row in completedRows)
-    //    {
-    //        gridManager.ClearRow(row);
-    //        gridRenderer.ClearRow(row);
-    //    }
-
-    //    foreach (int col in completedColumns)
-    //    {
-    //        gridManager.ClearColumn(col);
-    //        gridRenderer.ClearColumn(col);
-    //    }
-    //}
-    //void CheckForLineClear()
-    //{
-    //    var completedRows = gridManager.GetCompletedRows();
-    //    var completedColumns = gridManager.GetCompletedColumns();
-
-    //    if (completedRows.Count > 0 || completedColumns.Count > 0)
-    //    {
-    //        GameManager.Instance.HandleLineClear(completedRows, completedColumns);
-    //    }
-    //}
-
-    void SnapToGrid(Vector2Int gridPos)
-    {
-        Vector2 anchoredPos = new Vector2(
-            gridPos.x * gridManager.cellSize,
-            -gridPos.y * gridManager.cellSize
-        );
-
-        //transform.anchoredPosition = anchoredPos;
-        GetComponent<RectTransform>().anchoredPosition = anchoredPos;
     }
 }
