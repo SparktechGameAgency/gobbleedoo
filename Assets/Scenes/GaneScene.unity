@@ -912,8 +912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e9a0be18b2ad1428fff709c654c959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  width: 8
-  height: 10
+  width: 9
+  height: 9
   cellSize: 100
   gridArea: {fileID: 992372885}
   canvas: {fileID: 756699427}
@@ -927,6 +927,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1244097870}
   - component: {fileID: 1244097871}
+  - component: {fileID: 1244097872}
   m_Layer: 5
   m_Name: BlockTrayPanel
   m_TagString: Untagged
@@ -972,6 +973,32 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4fea3541b3f021e4f9dd6b7f9bda7763, type: 2}
   - {fileID: 11400000, guid: f07ea9c4933384e41a1ac245f75d29d5, type: 2}
   gridManager: {fileID: 1213180063}
+--- !u!114 &1244097872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244097869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 200
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1478750063
 GameObject:
   m_ObjectHideFlags: 0

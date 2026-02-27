@@ -64,8 +64,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockView
   blockData: {fileID: 11400000, guid: 4fea3541b3f021e4f9dd6b7f9bda7763, type: 2}
   cellPrefab: {fileID: 1965381164776232443, guid: 201d3738a3da5554cad5c2f996ac0daa, type: 3}
-  cellSize: 100
-  gridManager: {fileID: 0}
 --- !u!114 &-1771994323959413722
 MonoBehaviour:
   m_ObjectHideFlags: 0

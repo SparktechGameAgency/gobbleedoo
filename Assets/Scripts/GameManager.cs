@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     void CheckGameOver()
     {
-        var tray = FindObjectOfType<BlockTrayManager>();
+        var tray = Object.FindObjectOfType<BlockTrayManager>();
 
         foreach (var block in tray.GetActiveBlocks())
         {

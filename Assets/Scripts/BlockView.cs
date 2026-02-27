@@ -10,11 +10,11 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private Vector2 startPosition;
     private Canvas canvas;
-    public GridManager gridManager;
+    private GridManager gridManager;
     private BlockTrayManager trayManager;
     private GridRenderer gridRenderer;
 
-    private Vector2 dragOffset;     // before step 7 
+    private Vector2 dragOffset;     
 
     private RectTransform rectTransform;
 
