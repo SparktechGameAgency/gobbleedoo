@@ -18,6 +18,8 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private RectTransform rectTransform;
 
+    private Vector2Int grabbedCellOffset;
+
     public void Initialize(BlockData data, GridManager grid)
     {
         blockData = data;
@@ -62,6 +64,22 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         dragOffset = rectTransform.anchoredPosition - localPoint;
         startPosition = rectTransform.anchoredPosition;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectTransform,
+            eventData.position,
+            canvas.worldCamera,
+            out Vector2 localBlockPoint
+        );
+
+        // Because pivot might not be (0,0), adjust to top-left space
+        float adjustedX = localBlockPoint.x + rectTransform.pivot.x * rectTransform.rect.width;
+        float adjustedY = localBlockPoint.y - (1 - rectTransform.pivot.y) * rectTransform.rect.height;
+
+        int cellX = Mathf.FloorToInt(adjustedX / cellSize);
+        int cellY = Mathf.FloorToInt(-adjustedY / cellSize);
+
+        grabbedCellOffset = new Vector2Int(cellX, cellY);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -83,7 +101,13 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     void TryPlace(Vector2 screenPosition)
     {
-        Vector2Int gridPos = gridManager.WorldToGrid(screenPosition);
+        //Vector2Int gridPos = gridManager.WorldToGrid(screenPosition);
+        Vector2Int pointerGridPos = gridManager.WorldToGrid(screenPosition);
+
+        Vector2Int gridPos = new Vector2Int(
+            pointerGridPos.x - grabbedCellOffset.x,
+            pointerGridPos.y - grabbedCellOffset.y
+        );
 
         if (PlacementValidator.CanPlace(blockData, gridPos, gridManager))
         {
