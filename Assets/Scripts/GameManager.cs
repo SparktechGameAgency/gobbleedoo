@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,12 +15,34 @@ public class GameManager : MonoBehaviour
     public GameObject lineClearPopup;
     public GameObject gameOverPopup;
 
+    public int currentScore = 0;
+
+    public TextMeshProUGUI scoreText;
+
     private List<int> pendingRows = new List<int>();
     private List<int> pendingColumns = new List<int>();
 
     void Awake()
     {
         Instance = this;
+    }
+
+    void Start()
+    {
+        currentScore = 0;
+        UpdateScoreUI();
+    }
+
+    public void AddScore(int amount)
+    {
+        currentScore += amount;
+        UpdateScoreUI();
+    }
+
+    void UpdateScoreUI()
+    {
+        if (scoreText != null)
+            scoreText.text = "Score: " + currentScore.ToString();
     }
 
     public void OnBlockPlaced()
@@ -36,23 +60,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //public void ConfirmLineClear()
+    //{
+    //    foreach (int row in pendingRows)
+    //    {
+    //        gridManager.ClearRow(row);
+    //        gridRenderer.ClearRow(row);
+    //    }
+
+    //    foreach (int col in pendingColumns)
+    //    {
+    //        gridManager.ClearColumn(col);
+    //        gridRenderer.ClearColumn(col);
+    //    }
+
+    //    lineClearPopup.SetActive(false);
+    //    QuizManager.Instance.ShowRandomQuestion();
+    //    //CheckGameOver();
+    //}
     public void ConfirmLineClear()
     {
+        int totalLinesCleared = 0;
+
         foreach (int row in pendingRows)
         {
             gridManager.ClearRow(row);
             gridRenderer.ClearRow(row);
+            totalLinesCleared++;
         }
 
         foreach (int col in pendingColumns)
         {
             gridManager.ClearColumn(col);
             gridRenderer.ClearColumn(col);
+            totalLinesCleared++;
         }
+
+        if (totalLinesCleared > 0)
+            AddScore(200 * totalLinesCleared);
 
         lineClearPopup.SetActive(false);
 
-        CheckGameOver();
+        QuizManager.Instance.ShowRandomQuestion();
     }
 
     void CheckGameOver()
@@ -74,5 +123,21 @@ public class GameManager : MonoBehaviour
         }
 
         gameOverPopup.SetActive(true);
+    }
+
+    public void CheckGameOverAfterQuiz()
+    {
+        CheckGameOver();
+    }
+
+    public void RestartGame()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex);
+    }
+
+    public void LoadSceneByName(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

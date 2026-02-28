@@ -113,7 +113,9 @@ public class BlockView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             PlacementValidator.Place(blockData, gridPos, gridManager);
 
-            gridRenderer.PlaceVisual(blockData, gridPos);       
+            gridRenderer.PlaceVisual(blockData, gridPos);
+
+            GameManager.Instance.AddScore(12);   // +12 for placing
 
             GameManager.Instance.OnBlockPlaced();
 

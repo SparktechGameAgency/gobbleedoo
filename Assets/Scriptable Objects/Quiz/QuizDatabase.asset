@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e2cec55ffeb9c44b3a2f78aac4fffe, type: 3}
+  m_Name: QuizDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::QuizDatabase
+  questions:
+  - questionText: What is 3+3??
+    options:
+    - 5
+    - 4
+    - 6
+    - 7
+    correctAnswerIndex: 2
+  - questionText: What is 4-2
+    options:
+    - 4
+    - 0
+    - 1
+    - 2
+    correctAnswerIndex: 3
+  - questionText: What is 8/4
+    options:
+    - 2
+    - 1
+    - 5
+    - 3
+    correctAnswerIndex: 0
